@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>게시판</h1>
+
+        <section class="form-section">
+            <h2>게시물 작성</h2>
+            <form id="createForm">
+                <input type="text" id="createTitle" placeholder="제목" required>
+                <textarea id="createContent" placeholder="내용" rows="4" required></textarea>
+                <input type="password" id="createPassword" placeholder="비밀번호" required>
+                <button type="submit">작성</button>
+            </form>
+        </section>
+
+        <section class="list-section">
+            <h2>게시물 목록</h2>
+            <div id="postsList"></div>
+        </section>
+
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div id="modalBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

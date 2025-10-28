@@ -86,7 +86,7 @@ app.post('/api/posts', (req, res) => {
             return
         }
 
-        res.status(201).json({ id: this.lastID }) // 성공 시 201(Created) 응답과 새 게시물 ID 반환
+        res.status(201).json({ message: 'Post created successfully' }) // 성공 시 201(Created) 응답
     })
 })
 
@@ -94,7 +94,6 @@ app.post('/api/posts', (req, res) => {
 app.put('/api/posts/:id', (req, res) => {
     const { id } = req.params
     const { title, content, password } = req.body
-    const hashedPassword = bcrypt.hashSync(password, 10)
 
     db.get('SELECT password FROM posts WHERE id = ?', [id], (err, row) => {
         // 수정할 게시글이 존재하는지 확인
@@ -108,7 +107,7 @@ app.put('/api/posts/:id', (req, res) => {
             return
         }
 
-        if (row.password !== hashedPassword) {
+        if (!bcrypt.compareSync(password, row.password)) {
             res.status(403).json({ error: 'Incorrect password' }) // 비밀번호 불일치 시 403(Forbidden) 응답
             return
         }
@@ -128,7 +127,6 @@ app.put('/api/posts/:id', (req, res) => {
 app.delete('/api/posts/:id', (req, res) => {
     const { id } = req.params
     const { password } = req.body
-    const hashedPassword = bcrypt.hashSync(password, 10)
 
     db.get('SELECT password FROM posts WHERE id = ?', [id], (err, row) => {
         if (err) {
@@ -141,7 +139,7 @@ app.delete('/api/posts/:id', (req, res) => {
             return
         }
 
-        if (row.password !== hashedPassword) {
+        if (!bcrypt.compareSync(password, row.password)) {
             res.status(403).json({ error: 'Incorrect password' })
             return
         }

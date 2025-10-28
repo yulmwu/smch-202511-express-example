@@ -1,17 +1,19 @@
-import express from 'express'
-import sqlite3 from 'sqlite3'
-import path from 'path'
-import bcrypt from 'bcrypt'
-import { fileURLToPath } from 'url'
+import express from 'express' // Express 프레임워크
+import sqlite3 from 'sqlite3' // SQLite3(파일 기반 경량 DB) 모듈
+import path from 'path' // 파일 및 디렉토리 경로 조작을 위한 path 모듈
+import bcrypt from 'bcrypt' // 비밀번호 해싱을 위한 bcrypt 모듈
+import morgan from 'morgan' // 요청 로깅을 위한 morgan 모듈
+import { fileURLToPath } from 'url' // __dirname 대체용(ESM 환경)
 
-const app = express()
+const app = express() // Express 애플리케이션 생성
 
 const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const __dirname = path.dirname(__filename) // __dirname 대체
 
 app.use(express.json()) // 미들웨어: JSON 요청 파싱
 app.use(express.urlencoded({ extended: true })) // 미들웨어: URL-encoded 요청 파싱
 app.use(express.static('public')) // 정적 파일 제공 (index.html, ejs 등 템플릿을 사용하지 않고 index.html에서 API 호출)
+app.use(morgan('dev')) // 미들웨어: 요청 로깅
 
 const DB_PATH = path.join(__dirname, 'database.sqlite') // DB 경로
 
